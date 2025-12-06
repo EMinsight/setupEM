@@ -1,7 +1,6 @@
 # Python GUI for gds2palace workflow
 
-setupEM provides a graphical user interface (Qt based) to configured gds2palace workflow.
-gds2palace enables an RFIC FEM simulation workflow based on the Palace FEM solver by AWS.
+setupEM provides a Python-based graphical user interface (Qt based) to configure the gds2palace workflow. gds2palace enables RFIC FEM simulation workflow based on the Palace FEM solver by AWS.
 
 An overview of the user interface is given below in chapter "Using setupEM"
 
