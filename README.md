@@ -41,12 +41,13 @@ sudo apt install libxcb-cursor0 libxcb-xinerama0 libxcb-xkb1 libxcb-icccm4 libxc
 ```
 
 ## Dependencies
-This module also installs these dependencies:
-    gds2palace
-    PySide6
-    scipy
-    requests
+The setupEM module also installs these dependencies:
+- gds2palace
+- PySide6
+- scipy
+- requests
     
+---
 
 # Using setupEM
 To start setupEM, open a terminal window and activate the venv. Then with the venv activated, type setupEM to start the module application:
