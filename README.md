@@ -64,7 +64,9 @@ using the Palace stackup for openEMS might result in slower simulation.
 
 <img src="./doc/png/showstackup1.png" alt="stackup" width="750">
 
-<img src="./doc/png/showstackup2.png" alt="stackup" width="750">
+This also works with more complex stackups. Dielectric materials are color coded, to easily identify different permittivities. For metal layers, sheet resistance and thickness and distance to other layers is displayed.
+
+<img src="./doc/png/showstackup3.png" alt="stackup" width="750">
 
 ## Frequencies
 Here, you configure the frequency sweep. Palace uses an adaptive frequency sweep, so that dense sweeps with many points 
