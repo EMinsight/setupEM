@@ -1,27 +1,24 @@
 # Python GUI for gds2palace 
 
-setupEM provides a Python-based graphical user interface (Qt based) to configure the gds2palace workflow. gds2palace enables RFIC FEM simulation workflow based on the Palace FEM solver by AWS.
+gds2palace enables RFIC FEM simulation workflow based on the Palace FEM solver by AWS. setupEM provides a Python-based graphical user interface to configure and run the gds2palace workflow. 
 
 An overview of the user interface is given below in chapter "Using setupEM"
 
 # Installation
-setupEM can be used on Linux, Windows, MacOS and other platforms. 
+As a Python program that uses the Qt library, setupEM works on Linux, Windows, MacOS and other platforms.
 
-To install the setupEM, activate the venv where you want to install.
+To install the setupEM, activate the Python venv where you want to install.
 
 Documentation for the gds2palace workflow assumes that you have created a Python venv 
-named "palace" in ~/venv/palace and installed the modules there. 
+named "palace" in ~/venv/palace and installed the gds2palace module there. 
 
-If you follow these instructions, you would first activate the venv: 
+If you follow these instructions, you now need to activate that venv and then install setupEM and dependencies via PyPI: 
 ```
     source ~\venv\palace\bin\activate
-```
-and then install setupEM and dependencies via PyPI: 
-```
     pip install setupEM    
 ```
 
-To upgrade to the latest version, do 
+Later, if you want to upgrade to the latest version, you can do
 ```
     pip install setupEM --upgrade   
 ```
@@ -50,26 +47,28 @@ The setupEM module also installs these dependencies:
 ---
 
 # Using setupEM
-To start setupEM, open a terminal window and activate the venv. Then with the venv activated, type setupEM to start the module application:
+To start setupEM, open a terminal window and activate the venv where you installed the setupEM module. Then with the venv activated, you can simply type setupEM to start the module main program.
 
-```
-    setupEM    
-```
-
+<img src="./doc/png/start.png" alt="start" width="700">
 
 ## User Interface
 
-The user interface of setupEM is organized in multiple tabs, which guide you through the model setup and simulation process. Behind the scenes, the setupEM user interface created Python model code for gds2palace, and you can check the resulting code on the "Code" tab.
+The user interface of setupEM is organized in multiple tabs, which guide you through the model setup and simulation process. Behind the scenes, the setupEM user interface creates Python model code for gds2palace, and you can check the resulting code on the "Code" tab.
 
-In setupEM, **yellow** input fields always require your attention, whereas **white** fields can often be left to default values.
+Colors in the user interface: In setupEM, **yellow** input fields always require your attention, whereas **white** fields can often be left to default values.
 
 ## Input Files
-Here, you configure input files: the GDSII layout file that provides geometry information and the XML file that provides stackup information. 
-Some pre-processing of the layout is also defined here: You can also specify a distance (in micron) which is used for **via array merging**, to speed up simulation by replacing many individual vias with one large via box. If your layout includes **polygons with holes**, you need to set the "Preprocess GDSII file" checkbox, otherwise you will get error messages during meshing.
+On this tab, you configure input files:
+- GDSII layout file that provides geometry information and 
+- XML file that provides stackup information. 
+
+The fields for GDSII and XML file support drag & drop or you can use the Browse... buttons.
+
+Some pre-processing of the layout is also defined here: You can specify a distance (in micron) which is used for **via array merging**, to speed up simulation by replacing many individual vias with one large via box. If your layout includes **polygons with holes**, you need to set the "Preprocess GDSII file" checkbox, otherwise you will get error messages during meshing.
 
 <img src="./doc/png/inputfiles1.png" alt="input files" width="700">
 
-Using the "Show stackup" button, you can also visualize the stackup and see material information. Note that XML files for FEM simulation in Palace 
+Using the "Show stackup" button, you can visualize the stackup and see material information. Note that XML files for FEM simulation in Palace 
 are different in some details (e.g. MIM) from XML used for the openEMS flow. This is because each stackup is optimized 
 for the specific simulation method. Using the openEMS stackup for gds2palace might result in errors durining meshing, 
 using the Palace stackup for openEMS might result in slower simulation.
@@ -81,16 +80,16 @@ Dielectric materials are color coded, to easily identify different permittivitie
 <img src="./doc/png/showstackup3.png" alt="stackup" width="750">
 
 ## Frequencies
-Here, you configure the frequency sweep. Palace uses an adaptive frequency sweep, so that dense sweeps with many points 
+On this tab, you configure the frequency range for simulation. Palace is configured to use an **adaptive frequency sweep**, so that dense sweeps with many points 
 are created from a limited number of EM simulations. However, in general, more frequency points will take more simulation time.
 
 If you want/need to simulate **specific fixed frequencies**, you can enter them in the "fpoint" field.
 
-If you want/need to simulate specific fixed frequencies and **store the resulting fields to disk for visualization in Paraview**, you can enter them in the "fdump" field instead. All these frequency lists will be combined before simulation.
+If you want/need to add specific fixed frequencies and **store the resulting fields to disk for visualization in Paraview**, you can enter them in the "fdump" field instead. All these frequency lists will be combined before simulation.
 
 <img src="./doc/png/frequencies1.png" alt="frequencies" width="750">
 
-The FEM simulation can't do 0 Hz DC simulation, but you can specify start frequency 0 here and workflow will handle this behind the scenes: instead of 0 Hz, tw low frequency points of 10 MHz and 20 MHz will be simulated, and the data will be extrapolated to 0 Hz in postprocessing.
+FEM simulation can't simulate at 0 Hz DC, but in setupEM you can specify start frequency 0 and the workflow will handle this behind the scenes: instead of 0 Hz, two low frequency points of 10 MHz and 20 MHz will be simulated, and the data will be extrapolated to 0 Hz in postprocessing.
 
 ## Ports
 As explained in the [gds2palace documentation](https://github.com/VolkerMuehlhaus/gds2palace_ihp_sg13g2/blob/main/doc/gds2palace_workflow_userguide.pdf), ports are created by drawing rectangles on special layers to the GDSII file. For in-plane ports these must be rectangles, for via ports it must be lines (box with zero size in x or y direction). In setupEM, you then map the source layer for each of these ports, and define direction and target layer(s). Direction matters for polarity if multiple ports are connected to the same ground.
@@ -99,13 +98,13 @@ In the upper part of the tab, you make your settings and then need to apply to t
 
 <img src="./doc/png/ports1.png" alt="ports" width="700">
 
-Palace does not evaluate the port voltage parameter, but we use it here to specify if ports are "active" during S-parameter simulation. To get the full S-parameters, all ports must be simulated with non-zero voltage, which means that all ports are excited one after another. If you want to simulate only selected excitations, for faster total simulation time, you can set ports to zero voltage. In this case, you will **not** get full S-parameters data and the missing paths are set to 0 in the output file. 
+Palace does not evaluate the port voltage parameter, but we use it internally to specify if ports are "active" during S-parameter simulation. To get the full S-parameters, all ports must be simulated with non-zero voltage, which means that all ports are excited one after another. If you want to simulate only selected excitations, for faster total simulation time, you can set ports to zero voltage. In that case, you will **not** get full S-parameters data and the missing paths are set to 0 in the output file. 
 
 <img src="./doc/png/ports2.png" alt="ports" width="700">
 
 # Mesh and Boundaries
 
-Here, you control the mesh used for FEM simulation, which has an effect on simulation time and accuracy. Finer mesh is more accurate, because it can model the actual fields in more detail, but it takes more time to solve.
+On this tab, you control the mesh used for FEM simulation, which has an effect on simulation time and accuracy. Finer mesh is more accurate, because it can model the actual fields in more detail, but it takes more time to solve.
 
 Parameter "Mesh refinement at the edges" does what the name says, this is parameter "refined_cellsize" in gds2palace code. This is the mesh size used along the edges of polygons. If the actual geometry is smaller than this value, local mesh size will result from geometry dimensions, so this value does **not** specify a lower limit for global mesh size (as done in the IHP gds2openEMS flow). In many cases, a value of 2 or 5 microns will give great results for IHP SG13G2 simulation models. For physically small layouts, you might go down to 1µm, but small details will be included anyway, no matter what your setting is.
 
@@ -142,17 +141,27 @@ To start simulation on Windows from the WSL terminal, type
 ./run_sim
 ```
 
-
 ## Code 
 Behind the scenes, the setupEM user interface created Python model code for gds2palace, and you can check the resulting code on the "Code" tab.
 
-<img src="./doc/png/code1.png" alt="code" width="750">
+<img src="./doc/png/code1.png" alt="code" width="700">
+
+## File menu
+In the setupEM File menu, you can save and load simulation configurations, and you can also save and load a user defined "Default Settings" configuration. This includes the choice of simulation target directory and all other settings. Settings are stored in a JSON file with file extension ".simcfg". The "Default Settings" will be stored to the user home diretory.
+
+Using "File > Import from *.py model", you can load settings from existing simulation model code, e.g. the examples included in the gds2palace repository. This import is based on detecting known keywords, with or without the settings[] syntax, and also works for openEMS Python models. Note that openEMS substrates model the MIM differently, and parameter "refined_cellsize" will usually be smaller in openEMS simulation, so you need to adjust these settings.
+
+If you are on the "Code" tab, you can also export the Python model code using "File > Export to *.py model". This option is only required if you want to save the model code **without** running it. Buttons "Create mesh and model file" and "Run Palace" on the "Create Model" tab will also save the model code to the target directory, and run it from there.
+
+
+
+<img src="./doc/png/filemenu1.png" alt="file" width="700">
 
 ## Help menu and Version Check
 
 In the Help menu, you can find links to relevant documentation pages. Also, there is an item Help > Version Information that gives information on your installed versions of **gds2palace** and **setupEM** and the latest version that are available online.
 
-<img src="./doc/png/version1.png" alt="version" width="750">
+<img src="./doc/png/version1.png" alt="version" width="700">
 
 
 To upgrade gds2palace and its user interface setupEM to the latest version, do 
