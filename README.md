@@ -141,6 +141,8 @@ To start simulation on Windows from the WSL terminal, type
 ./run_sim
 ```
 
+To **create Touchstone SnP output** from simulation results, please have a look at the scripts directory. Script "combine_snp" runs Python code "combine_extend_snp.py", which scans your directories (working directory and below) and converts simulation results to Touchstone file format. Supported input file format: Palace and Elmer S-parameter data.
+
 ## Code 
 Behind the scenes, the setupEM user interface created Python model code for gds2palace, and you can check the resulting code on the "Code" tab.
 
@@ -153,9 +155,8 @@ Using "File > Import from *.py model", you can load settings from existing simul
 
 If you are on the "Code" tab, you can also export the Python model code using "File > Export to *.py model". This option is only required if you want to save the model code **without** running it. Buttons "Create mesh and model file" and "Run Palace" on the "Create Model" tab will also save the model code to the target directory, and run it from there.
 
-
-
 <img src="./doc/png/filemenu1.png" alt="file" width="700">
+
 
 ## Help menu and Version Check
 
