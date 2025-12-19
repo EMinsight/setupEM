@@ -1,14 +1,35 @@
 # Python GUI for gds2palace 
 
-gds2palace enables RFIC FEM simulation workflow based on the Palace FEM solver by AWS. setupEM provides a Python-based graphical user interface to configure and run the gds2palace workflow. 
-https://github.com/VolkerMuehlhaus/gds2palace_ihp_sg13g2
+[gds2palace](https://github.com/VolkerMuehlhaus/gds2palace_ihp_sg13g2) enables an **RFIC FEM simulation** workflow where GDSII layout files are simulated using the [Palace FEM solver by AWS](https://awslabs.github.io/palace/stable/). setupEM provides a Python-based graphical user interface to configure and run gds2palace, instead of creating the simulation model code manually.
 
-An overview of the user interface is given below in chapter "Using setupEM"
+When you install setupEM, the gds2palace workflow is installed in the background. This enables **creating** a simulation model for AWS Palace. To actually run the simulation, you need to have AWS Palace installed. 
 
-# Installation
-As a Python program that uses the Qt library, setupEM works on Linux, Windows, MacOS and other platforms.
+An overview of the SetupEM user interface is given below in chapter "Using setupEM"
 
-To install the setupEM, activate the Python venv where you want to install.
+
+## Installing the AWS Palace FEM solver engine
+setupEM creates and runs simulation models for the AWS Palace FEM solver engine. AWS Palace itself can be installed in multiple ways. For a smooth interaction with the gds2palace workflow, it is recommended to create some scripts that help running the model and convert the Palace results to SnP Touchstone files.
+
+For development of this workflow, Palace was installed using the Singularity/Apptainer installation method. This was rather simple and straightforward, even with no knowledge about container usage. The resulting apptainer file palace.sif can be integrated very easily in a Linux system like the Ubuntu 24.04 system used here, and can then be moved to other Linux machines using simple copy of the container file. The script to start Palace from the apptainer is included in the scripts directory in this repository.
+
+Notes on installing the Palace solver using **apptainer** container manager:
+[Installing Palace using Apptainer](./doc/Installing_Palace_using_Apptainer.pdf) 
+
+Using the spack package manager, Palace can also be created from source with a few simple commands. All tools required by the build process will be downloaded and installed automatically by spack, so you can sit and watch while your system builds the software.
+
+Notes in compiling Palace using the **spack package manager for Linux**:
+[Installing Palace using spack](./doc/Installing_Palace_using_Spack.pdf) 
+
+Thread on compiling Palace using the **spack package manager for MacOS**:
+[Spack install for MacOS outdated?](https://github.com/awslabs/palace/issues/581) 
+
+You can use any of the installation methods described on the AWS Palace web site. The gds2palace workflow does not change, it only creates the input files for Palace and does not care how you installed Palace, or on what platform you run the actual Palace simulation from these model files. To start Palace from setupEM, a wrapper script **run_palace** is used, and this is where you point to your actual installation (even remote copy & remote simulation is possible).
+
+
+# Installation of setupEM (including gds2palace workflow files)
+As a Python program that uses the Qt library, setupEM works on Linux, Windows, MacOS and other platforms. The Palace solver itself is designed for Linux systems, but can you install it using the Windows Subsystem for Linux (WSL). Palace also works well on MacOS, installed using spack as described [above](https://github.com/awslabs/palace/issues/581).
+
+To install setupEM, activate the Python venv where you want to install.
 
 Documentation for the gds2palace workflow assumes that you have created a Python venv 
 named "palace" in ~/venv/palace and installed the gds2palace module there. 
@@ -23,6 +44,8 @@ Later, if you want to upgrade to the latest version, you can do
 ```
     pip install setupEM --upgrade   
 ```
+
+
 
 ## Missing libraries on installation
 If you see this error message when trying to run setupEM:
