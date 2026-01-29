@@ -195,3 +195,33 @@ To upgrade gds2palace and its user interface setupEM to the latest version, do
     pip install setupEM --upgrade   
 ```
 
+# KLayout Integration 
+
+<img src="./doc/png/klayout1.png" alt="klayout" width="700">
+
+setupEM can be launched directly from **KLayout** through a helper script that you can download here:
+
+https://github.com/VolkerMuehlhaus/setupEM/blob/main/src/scripts/klayout_setupEM.py 
+
+## Usage on Linux
+
+Download and save `klayout_setupEM.py` somewhere, e.g. `~/scripts`
+
+If you then start KLayout using this script, a new menu item is available: Tools > setupEM
+
+```bash
+#!/bin/bash
+/usr/bin/klayout -e -rm ~/scripts/klayout_setupEM.py $1 $2 $3
+```
+
+
+## Desktop Shortcut (Windows)
+
+1. Right-click → **New → Shortcut**
+2. Set target:
+
+```text
+"<Path to KLayout>\klayout_app.exe" -e -rm "<Path to script>\klayout_setupEM.py"
+```
+
+3. Name it e.g. **setupEM via KLayout**  
